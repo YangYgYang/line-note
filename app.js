@@ -2,9 +2,18 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-app.get('/',(req,res)=>{
-    res.send('express is running')
-})
+//==========template engine
+const exphbs = require('express-handlebars')
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
+//==========setting static files
+app.use(express.static('public'))
+
+
+//require router引入routes就會自動去找目錄下index的檔案 為何(怎樣才會去去尋找？)
+const routes = require('./routes')
+app.use(routes)
 
 
 app.listen(port, () => { console.log(`Express is running on http://localhost:${port}`) })
